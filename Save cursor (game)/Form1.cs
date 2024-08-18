@@ -20,15 +20,15 @@ namespace Save_cursor__game_
             StartPosition = FormStartPosition.CenterScreen;
         }
 
-        private async void timer1_Tick(object sender, EventArgs e)
+        private void timer1_Tick(object sender, EventArgs e)
         {
-            await TrapsMoving();
+             TrapsMoving();
         }
-        private async void timer2_Tick(object sender, EventArgs e)
+        private void timer2_Tick(object sender, EventArgs e)
         {
-            await CreateTraps();
+            CreateTraps();
         }
-        private async Task TrapsMoving()
+        private void TrapsMoving()
         {
             foreach (Panel but in traps)
             {
@@ -44,7 +44,7 @@ namespace Save_cursor__game_
                 }
             }
         }
-        private async Task CreateTraps()
+        private void CreateTraps()
         {
             if (traps.Count <= 15)
             {
@@ -85,9 +85,9 @@ namespace Save_cursor__game_
             lbScore.Text = lbScoreOnTheScreen.Text;
             panel1.Visible = true;
             panel1.Enabled = true;
-            UpdateUserScore();
+            UpdateUserScoreAsync();
         }
-        private void UpdateUserScore()
+        private async Task UpdateUserScoreAsync()
         {
             string lastScore = lbScoreOnTheScreen.Text;
             DataBase db = new DataBase();
@@ -103,7 +103,7 @@ namespace Save_cursor__game_
                         command.Parameters.Add(new SqlParameter("@login_user", SqlDbType.NVarChar, 50) { Value = StartMenu.nameLabel.Text });
                         command.Parameters.Add(new SqlParameter("@score1", SqlDbType.NVarChar, 50) { Value = Convert.ToInt32(lastScore) });
                         command.Parameters.Add(new SqlParameter("@score2", SqlDbType.NVarChar, 100) { Value = Convert.ToInt32(lastScore) });
-                        command.ExecuteNonQuery();
+                        await command.ExecuteNonQueryAsync();
                     }
                     
                 }
